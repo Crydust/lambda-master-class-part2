@@ -62,9 +62,13 @@ public class Test01_FlatMap {
     @Test
     public void flatMap_2() {
 
-        List<String> words = null; // TODO
+        List<String> words = sonnet.stream()
+                .flatMap(line -> Arrays.stream(line.split("[ ,:.]+")))
+                .filter(word -> !word.isEmpty())
+                .collect(toList());
 
         assertThat(words.size()).isEqualTo(106);
         assertThat(words).contains("From", "fairest", "creatures", "we", "desire", "increase");
+        assertThat(words).contains("beauty's");
     }
 }

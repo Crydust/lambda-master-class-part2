@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
+import static java.util.Collections.unmodifiableList;
 import static java.util.stream.Collectors.groupingBy;
 import static java.util.stream.Collectors.toMap;
 import static org.assertj.core.api.Assertions.assertThat;
@@ -82,7 +83,17 @@ public class Test03_GroupingBy {
     @Test
     public void groupingBy_3() {
 
-        Map<String, List<String>> result = null; // TODO
+        Map<String, List<String>> result = sonnet.stream()
+                .collect(toMap(
+                        line -> line.substring(0, 1),
+                        line -> List.of(line),
+                        (a, b) -> {
+                            // merge lists
+                            final List<String> combined = new ArrayList<>(a);
+                            combined.addAll(b);
+                            return unmodifiableList(combined);
+                        }
+                ));
 
 
         assertThat(result.size()).isEqualTo(8);
